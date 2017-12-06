@@ -26,13 +26,14 @@ let pumpOn = false;
 
 setInterval(
   async () => {
+    const diff = process.hrtime(lastTime);
+    lastTime = process.hrtime();
     if (sensor) {
       if (!pumpOn) {
         en2.digitalWrite(0);
         en1.digitalWrite(1);
         pumpOn=true;
       }
-      const diff = process.hrtime(lastTime);
       console.log('time diff: ',diff[1] / 1000000000 + diff[0]);
       console.log('flowRate: ',lastFlowRate * 1000 / 60);
       poured += ( lastFlowRate * 1000 / 60) * (diff[1] / 1000000000 + diff[0]);
@@ -45,7 +46,6 @@ setInterval(
       }
 
       const flowRate = await sensor.getValue(); //L/min
-      lastTime = process.hrtime();
       lastFlowRate = flowRate;
 
     }
