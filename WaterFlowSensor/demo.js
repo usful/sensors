@@ -46,7 +46,7 @@ emitter.on('data', async (data) => {
     console.log(`Poured: ${poured}`);
     process.exit(0);
   }
-  
+
 }); //When new flow is read do this
 
 setInterval(
@@ -57,8 +57,7 @@ setInterval(
         en1.digitalWrite(1);
         pumpOn=true;
       }
-      poured += ( lastFlowRate * 1000 / 60) * (diff[1] / 1000000000 + diff[0]);
-
+      
       const flowRate = await sensor.getValue(); //L/min
       emitter.emit('data', flowRate);
     }
