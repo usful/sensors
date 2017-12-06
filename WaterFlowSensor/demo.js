@@ -15,8 +15,8 @@ const GPIO = require('pigpio').Gpio;
 
 const sensor = WaterFlowSensor(4);
 
-const en1 = new GPIO(pin, {mode: GPIO.OUTPUT});
-const en2 = new GPIO(pin, {mode: GPIO.OUTPUT});
+const en1 = new GPIO(17, {mode: GPIO.OUTPUT});
+const en2 = new GPIO(27, {mode: GPIO.OUTPUT});
 
 let poured = 0;
 
