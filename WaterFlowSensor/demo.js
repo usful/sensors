@@ -20,30 +20,29 @@ const en2 = new GPIO(27, {mode: GPIO.OUTPUT});
 
 let poured = 0;
 
-(async function loop() {
-  let pumpOn = false;
-  while(true) {
+let lastTime = process.hrTime();
+let lastFlowRate = 0;
+
+setInterval(
+  async () => {
     if (sensor) {
       if (!pumpOn) {
         en2.digitalWrite(0);
         en1.digitalWrite(1);
         pumpOn=true;
       }
-      const time = process.hrtime();
+      const diff = await process.hrTime(lastTime);
+      poured += ( lastFlowRate * 1000 / 60) * (diff[1] / 1000000000 + diff[0]);
+
+      if (poured >= 250 ) {
+        en1.digitalWrite(0);
+        console.log(`Poured: ${poured}`);
+        process.exit(0);
+      }
+
       const flowRate = await sensor.getValue(); //L/min
-      const mLPerSecond = flowRate*1000/60;
-      const diff = process.hrtime(time);
-      poured += mLPerSecond * (diff[0] + diff[1]/1000000000);
-      console.log(`Flow Rate: ${flowRate}`, `Total Volume (mL): ${poured}`);
+      lastFlowRate = flowRate;
+
     }
   }
-})();
-
-setInterval(() => {
-    if (poured >= 250) {
-      en1.digitalWrite(0);
-      process.exit(0);
-    }
-  },
-  100
 );
