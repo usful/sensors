@@ -16,6 +16,9 @@ const sensor = WaterFlowSensor(4);
 
 setInterval(
   async () => {
+    if (!sensor){
+      return;
+    } 
     const flowRate = await sensor.getValue();
     console.log(flowRate);
   },
