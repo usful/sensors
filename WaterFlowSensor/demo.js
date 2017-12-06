@@ -27,10 +27,13 @@ let poured = 0;
       if (!pumpOn) {
         en2.digitalWrite(0);
         en1.digitalWrite(1);
+        pumpOn=true;
       }
+      const time = process.hrtime();
       const flowRate = await sensor.getValue(); //L/min
       const mLPerSecond = flowRate*1000/60;
-      poured += mLPerSecond;
+      const diff = process.hrtime(time);
+      poured += mLPerSecond * (diff[0] + diff[1]/1000);
       console.log(`Flow Rate: ${flowRate}`, `Total Volume (mL): ${poured}`);
     }
   }
