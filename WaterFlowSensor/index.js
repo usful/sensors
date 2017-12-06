@@ -15,9 +15,17 @@ const { pause } = require('../utils');
  * @returns {*}
  */
 
-module.exports = (pin, { duration = 1000, flowRatePulseCharacteristics = hz => hz/(7.5*60) }) => {
+const defaultConf = {
+  duration: 1000,
+  flowRatePulseCharacteristics: hz => hz/(7.5*60),
+};
+
+module.exports = (pin, conf) => {
   this.sensor = new GPIO(pin, {mode: GPIO.OUTPUT});
   this.NbTopsFan;
+
+  const duration = conf.duration || defaultConf.duration;
+  const flowRatePulseCharacteristics = conf.flowRatePulseCharacteristics || defaultConf.flowRatePulseCharacteristics;
 
   this.rpm = () => {
     this.NbTopsFan ++;
