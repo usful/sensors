@@ -20,8 +20,9 @@ const en2 = new GPIO(27, {mode: GPIO.OUTPUT});
 
 let poured = 0;
 
-let lastTime = process.hrTime();
+let lastTime = process.hrtime();
 let lastFlowRate = 0;
+let pumpOn = false;
 
 setInterval(
   async () => {
@@ -31,8 +32,9 @@ setInterval(
         en1.digitalWrite(1);
         pumpOn=true;
       }
-      const diff = await process.hrTime(lastTime);
+      const diff = await process.hrtime(lastTime);
       poured += ( lastFlowRate * 1000 / 60) * (diff[1] / 1000000000 + diff[0]);
+      console.log(poured);
 
       if (poured >= 250 ) {
         en1.digitalWrite(0);
@@ -44,5 +46,6 @@ setInterval(
       lastFlowRate = flowRate;
 
     }
-  }
+  },
+  1100
 );
