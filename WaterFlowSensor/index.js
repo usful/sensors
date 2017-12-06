@@ -20,7 +20,7 @@ const defaultConf = {
   flowRatePulseCharacteristics: hz => hz/(7.5*60),
 };
 
-module.exports = (pin, conf) => {
+module.exports = (pin, conf = {}) => {
   this.sensor = new GPIO(pin, {mode: GPIO.OUTPUT});
   this.NbTopsFan;
 
