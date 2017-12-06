@@ -32,7 +32,9 @@ setInterval(
         en1.digitalWrite(1);
         pumpOn=true;
       }
-      const diff = await process.hrtime(lastTime);
+      const diff = process.hrtime(lastTime);
+      console.log('time diff: ',diff[1] / 1000000000 + diff[0]);
+      console.log('flowRate: ',lastFlowRate * 1000 / 60);
       poured += ( lastFlowRate * 1000 / 60) * (diff[1] / 1000000000 + diff[0]);
       console.log(poured);
 
