@@ -33,7 +33,7 @@ let poured = 0;
       const flowRate = await sensor.getValue(); //L/min
       const mLPerSecond = flowRate*1000/60;
       const diff = process.hrtime(time);
-      poured += mLPerSecond * (diff[0] + diff[1]/1000);
+      poured += mLPerSecond * (diff[0] + diff[1]/1000000000);
       console.log(`Flow Rate: ${flowRate}`, `Total Volume (mL): ${poured}`);
     }
   }
