@@ -11,14 +11,23 @@
  */
 
 const WaterFlowSensor = require('./index');
+const GPIO = require('pigpio').Gpio;
 
 const sensor = WaterFlowSensor(4);
+
+const en1 = new GPIO(pin, {mode: GPIO.OUTPUT});
+const en2 = new GPIO(pin, {mode: GPIO.OUTPUT});
 
 let poured = 0;
 
 (async function loop() {
+  let pumpOn = false;
   while(true) {
     if (sensor) {
+      if (!pumpOn) {
+        en2.digitalWrite(0);
+        en1.digitalWrite(1);
+      }
       const flowRate = await sensor.getValue(); //L/min
       const mLPerSecond = flowRate*1000/60;
       poured += mLPerSecond;
@@ -28,7 +37,10 @@ let poured = 0;
 })();
 
 setInterval(() => {
-    if (poured >= 250) { process.exit(0);}
+    if (poured >= 250) {
+      en1.digitalWrite(0);
+      process.exit(0);
+    }
   },
   100
 );
