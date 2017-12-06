@@ -38,7 +38,7 @@ setInterval(
       }
       
       const flowRate = await sensor.getValue(); //L/min
-      poured += flowRate * 1000 / 60;
+      poured += flowRate * 1000 / 60 * 2;
       console.log(`Poured out: ${poured}`);
       if (poured >= 250) {
         end();
