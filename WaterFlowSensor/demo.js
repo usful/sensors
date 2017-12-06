@@ -17,7 +17,7 @@ const sensor = WaterFlowSensor(4);
 let poured = 0;
 
 (async function loop() {
-  while(poured < 250) {
+  while(true) {
     if (sensor) {
       const flowRate = await sensor.getValue(); //L/min
       const mLPerSecond = flowRate*1000/60;
@@ -26,3 +26,9 @@ let poured = 0;
     }
   }
 })();
+
+setInterval(() => {
+    if (poured >= 250) { process.exit(0);}
+  },
+  100
+);
