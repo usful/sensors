@@ -12,9 +12,6 @@
 
 const WaterFlowSensor = require('./index');
 const GPIO = require('pigpio').Gpio;
-const EventEmitter = require('events');
-
-const emitter = new EventEmitter();
 
 const sensor = WaterFlowSensor(4);
 
@@ -22,32 +19,14 @@ const en1 = new GPIO(17, {mode: GPIO.OUTPUT});
 const en2 = new GPIO(27, {mode: GPIO.OUTPUT});
 
 let poured = 0;
-
-let lastTime = process.hrtime();
-let lastFlowRate = 0;
 let pumpOn = false;
 
-emitter.on('data', async (data) => {
-  const diff = process.hrtime(lastTime);
-  const flowRate = lastFlowRate;
+const end = () => {
+  en1.digitalWrite(0);
+  process.exit(0);
+};
 
-  lastFlowRate = data; //Sets this as early as possible
-  lastTime = process.hrtime(); //sets this as early as possible
-
-
-  console.log('time diff: ',diff[1] / 1000000000 + diff[0]);
-  console.log('flowRate: ',flowRate * 1000 / 60);
-
-  poured += ( flowRate * 1000 / 60) * (diff[1] / 1000000000 + diff[0]);
-  console.log(poured);
-
-  if (poured >= 250 ) {
-    en1.digitalWrite(0);
-    console.log(`Poured: ${poured}`);
-    process.exit(0);
-  }
-
-}); //When new flow is read do this
+process.on('SIGINT', end);
 
 setInterval(
   async () => {
@@ -59,9 +38,13 @@ setInterval(
       }
       
       const flowRate = await sensor.getValue(); //L/min
-      emitter.emit('data', flowRate);
+      poured += flowRate * 1000 / 60;
+      console.log(`Poured out: ${poured}`);
+      if (poured >= 250) {
+        end();
+      }
     }
   },
-  1100
+  1001
 );
 
