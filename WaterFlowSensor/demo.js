@@ -43,6 +43,7 @@ setInterval(
       }
 
       const flowRate = await sensor.getValue(); //L/min
+      lastTime = process.hrtime();
       lastFlowRate = flowRate;
 
     }
