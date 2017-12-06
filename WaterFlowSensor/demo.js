@@ -14,12 +14,17 @@ const WaterFlowSensor = require('./index');
 
 const sensor = WaterFlowSensor(4);
 
-setInterval(
-  async () => {
-    if (sensor) {
-      const flowRate = await sensor.getValue();
-      console.log(flowRate);
-    }
-  },
-  1100
-);
+let poured = 0;
+
+(async function loop() {
+  if (sensor) {
+    const flowRate = await sensor.getValue(); //L/min
+    const mLPerSecond = flowRate*1000/60;
+    poured += mLPerSecond;
+    console.log(`Flow Rate: ${flowRate}`, `Total Volume (mL): ${poured}`);
+  }
+
+  if(poured === 250) {
+    process.exit(0);
+  }
+})();

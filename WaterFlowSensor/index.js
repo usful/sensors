@@ -17,7 +17,7 @@ const { pause } = require('../utils');
 
 const defaultConf = {
   duration: 1000,
-  flowRatePulseCharacteristics: hz => hz/(7.5*60),
+  flowRatePulseCharacteristics: hz => hz/7.5,
 };
 
 module.exports = (pin, conf = {}) => {
