@@ -40,7 +40,7 @@ module.exports = (pin, conf = {}) => {
     this.NbTopsFan = 0;
     this.sensor.enableInterrupt(GPIO.RISING_EDGE);
     await pause(duration);
-    sensor.disableInterrupt();
+    this.sensor.disableInterrupt();
     return flowRatePulseCharacteristics(NbTopsFan*multiplier);
   };
 
