@@ -34,8 +34,6 @@ module.exports = {
       return;
     };
 
-    process.on('SIGINT', end);
-
     setInterval(
       async () => {
         if (sensor) {
