@@ -46,9 +46,9 @@ const runDemo = demo => {
 };
 
 if (program.list) {
-  console.log('The list of avaiable demos is:');
+  console.log('The avaiable demos are...');
   demos.forEach(demo => {
-    console.log(`${demo.meta.name}: ${demo.meta.description}`);
+    console.log(`\t${demo.meta.name}\n\t\t${demo.meta.description}`);
   });
 }else {
   demos.forEach(demo => {
