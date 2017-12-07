@@ -31,7 +31,7 @@ module.exports = {
     this.stop = () => {
       en.digitalWrite(0);
       speedControl.digitalWrite(0);
-      return;
+      process.exit(0);
     };
 
     setInterval(
