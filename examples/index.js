@@ -6,7 +6,7 @@ const prompt = require('prompt-sync')();
 program
   .version('0.0.1')
   .option('-l, --list', 'List Available Demos')
-  .option('-d, ---demo', 'The name of the demo to run')
+  .option('-d, --demo', 'The name of the demo to run')
   .parse(process.argv);
 
 const runDemo = demo => {
