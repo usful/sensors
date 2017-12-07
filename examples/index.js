@@ -23,7 +23,7 @@ const runDemo = demo => {
       const param = demo.meta.parameters[key];
       let answer;
       while (!params[key]) {
-        answer = prompt(`${key} [default ${param.default}]: `, '');
+        answer = prompt(key+'[default '+ param.default +']: ', '');
 
         if (answer === '') {
           params[key] = param.default;
