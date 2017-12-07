@@ -42,7 +42,9 @@ module.exports = {
             speedControl.pwmWrite(speed);
             pumpOn=true;
           }else {
-            speedControl.pwmWrite(speed - Math.floor(speedRange * poured / target_volume));
+            const newSpeed =Math.floor(speed - speedRange * poured / target_volume);
+            speedControl.pwmWrite(newSpeed);
+            console.log(`New Speed: ${newSpeed}`);
           }
 
           const flowRate = await sensor.getValue(); //L/min
