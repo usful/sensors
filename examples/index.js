@@ -45,8 +45,15 @@ const runDemo = demo => {
   demo.run(params);
 };
 
-demos.forEach(demo => {
-  if (demo.meta.name === program.args[0]) {
-    runDemo(demo);
-  }
-});
+if (program.list) {
+  console.log('The list of avaiable demos is:');
+  demos.forEach(demo => {
+    console.log(`${demo.meta.name}: ${demo.meta.description}`);
+  });
+}else {
+  demos.forEach(demo => {
+    if (demo.meta.name === program.args[0]) {
+      runDemo(demo);
+    }
+  });
+}
