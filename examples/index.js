@@ -23,10 +23,11 @@ const runDemo = demo => {
 
   if(demo.meta.parameters) {
     console.log('Configure Parameters\n');
-    Object.keys(demo.meta.parameters).forEach(key => {
+    Object.keys(demo.meta.parameters).forEach(async key => {
       const param = demo.meta.parameters[key];
+      let inputReceived;
       while (!params[key]) {
-        let inputReceived = false;
+        inputReceived = false;
         rl.question(`${key} [default ${param.default}]: `,
           answer => {
             if (answer === '') {
@@ -44,7 +45,17 @@ const runDemo = demo => {
             inputReceived = true;
           }
         );
-        while(!inputReceived){}
+        await new Promise(resolve => {
+          const interval = setInterval(
+            () => {
+              if (inputReceived) {
+                resolve();
+                clearInterval(interval);
+              }
+            },
+            100
+          );
+        });
       }
     })
   }
