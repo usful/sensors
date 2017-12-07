@@ -1,6 +1,6 @@
 const program = require('commander');
 const glob = require('glob');
-const demos = glob.sync('**/').forEach(dir => require(`./${dir}demo.js`));
+const demos = glob.sync('**/').map(dir => require(`./${dir}demo.js`));
 const readline = require('readline');
 
 program
