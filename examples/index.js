@@ -1,7 +1,7 @@
 const program = require('commander');
 const glob = require('glob');
 const demos = glob.sync('**/').map(dir => require(`./${dir}demo.js`));
-const prompt = require('prompt-sync');
+const prompt = require('prompt-sync')();
 
 program
   .version('0.0.1')
@@ -23,7 +23,7 @@ const runDemo = demo => {
       const param = demo.meta.parameters[key];
       let answer;
       while (!params[key]) {
-        answer = prompt(key+'[default '+ param.default +']: ', '');
+        answer = prompt(`${key} [default ${param.default}]: `);
 
         if (answer === '') {
           params[key] = param.default;
