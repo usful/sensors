@@ -13,6 +13,7 @@
     "glob": "^7.1.2",
     "infrared": "0.0.4",
     "pigpio": "^0.6.3",
+    "prompt-sync": "^4.1.5",
     "request": "^2.83.0",
     "request-promise": "^4.2.2"
   },

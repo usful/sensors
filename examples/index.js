@@ -1,7 +1,7 @@
 const program = require('commander');
 const glob = require('glob');
 const demos = glob.sync('**/').map(dir => require(`./${dir}demo.js`));
-const readline = require('readline');
+const prompt = require('prompt-sync');
 
 program
   .version('0.0.1')
@@ -9,12 +9,8 @@ program
   .parse(process.argv);
 
 const runDemo = demo => {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
 
-  rl.on('SIGINT', () => {
+  process.on('SIGINT', () => {
     demo.stop();
     process.exit(0);
   });
@@ -23,42 +19,25 @@ const runDemo = demo => {
 
   if(demo.meta.parameters) {
     console.log('Configure Parameters\n');
-    Object.keys(demo.meta.parameters).forEach(async key => {
+    Object.keys(demo.meta.parameters).forEach(key => {
       const param = demo.meta.parameters[key];
-      let inputReceived;
-      await (async () => {
-        while (!params[key]) {
-          inputReceived = false;
-          rl.question(`${key} [default ${param.default}]: `,
-            answer => {
-              if (answer === '') {
-                params[key] = param.default;
-              } else {
-                let value = answer;
-                if (param.type === 'Number') {
-                  value = +value;
-                }
+      let answer;
+      while (!params[key]) {
+        answer = prompt(`${key} [default ${param.default}]: `, '');
 
-                if (!param.range || (param.range && (param.min && !value < param.min) && (param.max && !value > param.max ))) {
-                  params[key] = value;
-                }
-              }
-              inputReceived = true;
-            }
-          );
-          await new Promise(resolve => {
-            const interval = setInterval(
-              () => {
-                if (inputReceived) {
-                  resolve();
-                  clearInterval(interval);
-                }
-              },
-              100
-            );
-          });
+        if (answer === '') {
+          params[key] = param.default;
+        } else {
+          let value = answer;
+          if (param.type === 'Number') {
+            value = +value;
+          }
+
+          if (!param.range || (param.range && (param.min && !value < param.min) && (param.max && !value > param.max ))) {
+            params[key] = value;
+          }
         }
-      })();
+      }
     })
   }
 
