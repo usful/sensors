@@ -14,6 +14,11 @@ const runDemo = demo => {
     output: process.stdout,
   });
 
+  rl.on('SIGINT', () => {
+    demo.stop();
+    process.exit(0);
+  });
+
   const params = {};
 
   if(demo.meta.parameters) {
@@ -23,13 +28,17 @@ const runDemo = demo => {
       while (!params[key]) {
         rl.question(`${key} [default ${param.default}]: `,
           answer => {
-            let value = answer;
-            if (param.type === 'Number') {
-              value = +value;
-            }
+            if (answer === '') {
+              params[key] = param.default;
+            }else {
+              let value = answer;
+              if (param.type === 'Number') {
+                value = +value;
+              }
 
-            if (!param.range || (param.range && (param.min && !value < param.min) && (param.max && !value > param.max ))) {
-              params[key] = value;
+              if (!param.range || (param.range && (param.min && !value < param.min) && (param.max && !value > param.max ))) {
+                params[key] = value;
+              }
             }
           }
         );
@@ -38,6 +47,9 @@ const runDemo = demo => {
   }
 
   demo.run(params);
+  rl.close();
+
+  console.log('Demo Finished!');
 };
 
 demos.forEach(demo => {

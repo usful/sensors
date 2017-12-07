@@ -15,17 +15,22 @@ const GPIO = require('pigpio').Gpio;
 
 
 module.exports = {
-  run: ({pump_enable_pin, sensor_pin, target_volume, conversion_constant}) => {
+  run: ({pump_enable_pin, sensor_pin, target_volume, conversion_constant, speed_control_pin, speed}) => {
     const sensor = WaterFlowSensor(sensor_pin);
+    const minSpeed = 80;
+
+    const speedRange = speed - minSpeed
 
     const en = new GPIO(pump_enable_pin, {mode: GPIO.OUTPUT});
+    const speedControl = new GPIO(speed_control_pin, {mode: GPIO.OUTPUT});
+
 
     let poured = 0;
     let pumpOn = false;
 
-    const end = () => {
+    this.stop = () => {
       en.digitalWrite(0);
-      //todo remove SIGINT Listener
+      speedControl.digitalWrite(0);
       return;
     };
 
@@ -36,7 +41,10 @@ module.exports = {
         if (sensor) {
           if (!pumpOn) {
             en.digitalWrite(1);
+            speedControl.pwmWrite(speed);
             pumpOn=true;
+          }else {
+            speedControl.pwmWrite(speed - Math.floor(speedRange * poured / target_volume));
           }
 
           const flowRate = await sensor.getValue(); //L/min
@@ -44,7 +52,7 @@ module.exports = {
           poured += flowRate * 1000 / 60 * conversion_constant;
           console.log(`Poured out: ${poured}`);
           if (poured >= target_volume) {
-            end();
+            this.stop();
           }
         }
       },

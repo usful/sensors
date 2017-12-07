@@ -5,7 +5,7 @@ module.exports = {
       type: "Number",
       range: {
         min: 0,
-        max: 42
+        max: 27
       },
       default: 17
     },
@@ -13,7 +13,7 @@ module.exports = {
       type: "Number",
       range: {
         min: 0,
-        max: 42
+        max: 27
       },
       default: 4
     },
@@ -23,7 +23,7 @@ module.exports = {
       range: {
         min: 0
       },
-      defautl: 250
+      default: 250
     },
     "conversion_constant": {
       type: "Number",
@@ -31,7 +31,23 @@ module.exports = {
         min: 0
       },
       default: 1.68
-    }
+    },
+    "speed" :{
+      type: "Number",
+      range: {
+        min: 0,
+        max: 255
+      },
+      default: 128
+    },
+    "speed_control_pin": {
+      type: "Number",
+      range: {
+        min: 0,
+        max: 27
+      },
+      default: 27
+    },
   },
   name: 'Water Flow Sensor',
   description: "In this demo we use a bilge pump paired with the water flow sensor to pump a specific amount of water"
