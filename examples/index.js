@@ -42,7 +42,6 @@ const runDemo = demo => {
   }
 
   demo.run(params);
-  rl.close();
 
   console.log('Demo Finished!');
 };
