@@ -26,37 +26,39 @@ const runDemo = demo => {
     Object.keys(demo.meta.parameters).forEach(async key => {
       const param = demo.meta.parameters[key];
       let inputReceived;
-      while (!params[key]) {
-        inputReceived = false;
-        rl.question(`${key} [default ${param.default}]: `,
-          answer => {
-            if (answer === '') {
-              params[key] = param.default;
-            }else {
-              let value = answer;
-              if (param.type === 'Number') {
-                value = +value;
-              }
+      await (async () => {
+        while (!params[key]) {
+          inputReceived = false;
+          rl.question(`${key} [default ${param.default}]: `,
+            answer => {
+              if (answer === '') {
+                params[key] = param.default;
+              } else {
+                let value = answer;
+                if (param.type === 'Number') {
+                  value = +value;
+                }
 
-              if (!param.range || (param.range && (param.min && !value < param.min) && (param.max && !value > param.max ))) {
-                params[key] = value;
+                if (!param.range || (param.range && (param.min && !value < param.min) && (param.max && !value > param.max ))) {
+                  params[key] = value;
+                }
               }
+              inputReceived = true;
             }
-            inputReceived = true;
-          }
-        );
-        await new Promise(resolve => {
-          const interval = setInterval(
-            () => {
-              if (inputReceived) {
-                resolve();
-                clearInterval(interval);
-              }
-            },
-            100
           );
-        });
-      }
+          await new Promise(resolve => {
+            const interval = setInterval(
+              () => {
+                if (inputReceived) {
+                  resolve();
+                  clearInterval(interval);
+                }
+              },
+              100
+            );
+          });
+        }
+      })();
     })
   }
 
