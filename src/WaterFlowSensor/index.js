@@ -1,5 +1,5 @@
 const GPIO = require('pigpio').Gpio;
-const { pause } = require('../utils');
+const { pause } = require('../../utils/index');
 
 /**
  * To convert the number of times a rising edge occurs within a given time duration into a measurement of flow,

@@ -10,7 +10,7 @@
  *
  */
 
-const WaterFlowSensor = require('./index');
+const WaterFlowSensor = require('../../src/WaterFlowSensor/index');
 const GPIO = require('pigpio').Gpio;
 
 
@@ -50,6 +50,7 @@ module.exports = {
       },
       1001
     );
-  }
+  },
+  meta: require('./meta')
 };
 

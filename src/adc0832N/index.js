@@ -1,5 +1,5 @@
 const Gpio  = require('pigpio').Gpio;
-const { pause } = require('../utils/index');
+const { pause } = require('../../utils/index');
 
 module.exports = function (csPin, dioPin, clockPin, channel = 0) {
 
