@@ -6,6 +6,7 @@ const prompt = require('prompt-sync')();
 program
   .version('0.0.1')
   .option('-l, --list', 'List Available Demos')
+  .option('-d, ---demo', 'The name of the demo to run')
   .parse(process.argv);
 
 const runDemo = demo => {
@@ -41,13 +42,12 @@ const runDemo = demo => {
     })
   }
 
+  console.log("Running Demo\n");
   demo.run(params);
-
-  console.log('Demo Finished!');
 };
 
 demos.forEach(demo => {
-  if (demo.meta.name) {
+  if (demo.meta.name === program.demo) {
     runDemo(demo);
   }
 });
