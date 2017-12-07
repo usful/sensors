@@ -13,39 +13,43 @@
 const WaterFlowSensor = require('./index');
 const GPIO = require('pigpio').Gpio;
 
-const sensor = WaterFlowSensor(4);
 
-const en1 = new GPIO(17, {mode: GPIO.OUTPUT});
-const en2 = new GPIO(27, {mode: GPIO.OUTPUT});
+module.exports = {
+  run: ({pump_enable_pin, sensor_pin, target_volume, conversion_constant}) => {
+    const sensor = WaterFlowSensor(sensor_pin);
 
-let poured = 0;
-let pumpOn = false;
+    const en = new GPIO(pump_enable_pin, {mode: GPIO.OUTPUT});
 
-const end = () => {
-  en1.digitalWrite(0);
-  process.exit(0);
+    let poured = 0;
+    let pumpOn = false;
+
+    const end = () => {
+      en.digitalWrite(0);
+      //todo remove SIGINT Listener
+      return;
+    };
+
+    process.on('SIGINT', end);
+
+    setInterval(
+      async () => {
+        if (sensor) {
+          if (!pumpOn) {
+            en.digitalWrite(1);
+            pumpOn=true;
+          }
+
+          const flowRate = await sensor.getValue(); //L/min
+          //Multiplied 1.68 due to testing. Depending on your apparatus this value might be different.
+          poured += flowRate * 1000 / 60 * conversion_constant;
+          console.log(`Poured out: ${poured}`);
+          if (poured >= target_volume) {
+            end();
+          }
+        }
+      },
+      1001
+    );
+  }
 };
-
-process.on('SIGINT', end);
-
-setInterval(
-  async () => {
-    if (sensor) {
-      if (!pumpOn) {
-        en2.digitalWrite(0);
-        en1.digitalWrite(1);
-        pumpOn=true;
-      }
-      
-      const flowRate = await sensor.getValue(); //L/min
-      //Multiplied 1.68 due to testing. Depending on your apparatus this value might be different.
-      poured += flowRate * 1000 / 60 * 1.68;
-      console.log(`Poured out: ${poured}`);
-      if (poured >= 250) {
-        end();
-      }
-    }
-  },
-  1001
-);
 
