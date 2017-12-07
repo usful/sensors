@@ -26,6 +26,7 @@ const runDemo = demo => {
     Object.keys(demo.meta.parameters).forEach(key => {
       const param = demo.meta.parameters[key];
       while (!params[key]) {
+        let inputReceived = false;
         rl.question(`${key} [default ${param.default}]: `,
           answer => {
             if (answer === '') {
@@ -40,8 +41,10 @@ const runDemo = demo => {
                 params[key] = value;
               }
             }
+            inputReceived = true;
           }
         );
+        while(!inputReceived){}
       }
     })
   }
