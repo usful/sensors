@@ -1,6 +1,6 @@
 const program = require('commander');
 const glob = require('glob');
-const demos = glob.sync('**/').map(dir => require(`./${dir}demo.js`));
+const demos = glob.sync('**/').map(dir => require(`./${dir}`));
 const prompt = require('prompt-sync')();
 
 program
@@ -17,10 +17,10 @@ const runDemo = demo => {
 
   const params = {};
 
-  if(demo.meta.parameters) {
+  if(demo.parameters) {
     console.log('Configure Parameters\n');
-    Object.keys(demo.meta.parameters).forEach(key => {
-      const param = demo.meta.parameters[key];
+    Object.keys(demo.parameters).forEach(key => {
+      const param = demo.parameters[key];
       let answer;
       while (!params[key]) {
         answer = prompt(`${key} [default ${param.default}]: `);
@@ -48,11 +48,11 @@ const runDemo = demo => {
 if (program.list) {
   console.log('The avaiable demos are...');
   demos.forEach(demo => {
-    console.log(`\t${demo.meta.name}\n\t\t${demo.meta.description}`);
+    console.log(`\t${demo.name}\n\t\t${demo.description}`);
   });
 }else {
   demos.forEach(demo => {
-    if (demo.meta.name === program.args[0]) {
+    if (demo.name === program.args[0]) {
       runDemo(demo);
     }
   });
