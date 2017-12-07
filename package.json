@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "commander": "^2.12.2",
+    "glob": "^7.1.2",
     "infrared": "0.0.4",
     "pigpio": "^0.6.3",
     "request": "^2.83.0",

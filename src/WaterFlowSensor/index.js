@@ -4,7 +4,7 @@ const { pause } = require('../../utils/index');
 /**
  * To convert the number of times a rising edge occurs within a given time duration into a measurement of flow,
  * it is required to convert that number into a measurement of frequency (Hz). Then use the Flow Rate Pulse characteristics
- * as described by the sensors data sheet to convert the frequency measurement into a rate of flow measurement.
+ * as described by the SensorDemos data sheet to convert the frequency measurement into a rate of flow measurement.
  *
  * The default configurations are set to a sampling time duration of 1000 ms and a flow rate pulse characteristics of
  *  hz = 7.5 * rateOfFlow(L/min) which we then divide by 60 to get L/s.
