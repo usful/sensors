@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ecaa5c61-8021-47bb-be10-bd0e6446f3f9" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/index.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/postcss.config.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/src/Helpers/Listen.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/src/Lex/index.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/src/Lex/styles.scss" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/src/html/index.template.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/src/index.jsx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/src/server.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/webpack.config.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/webpack.data.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Amazon Api/src/Helpers/Recorder.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sensors.iml" afterPath="$PROJECT_DIR$/.idea/sensors.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Amazon Api/public/index.html" afterPath="$PROJECT_DIR$/Amazon Api/public/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Amazon Api/src/Lex/index.jsx" afterPath="$PROJECT_DIR$/Amazon Api/src/Lex/index.jsx" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -26,14 +21,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.jsx" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Amazon Api/src/Lex/index.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="60" lean-forward="false" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="60" />
+            <state relative-caret-position="465">
+              <caret line="31" column="79" lean-forward="false" selection-start-line="31" selection-start-column="79" selection-end-line="31" selection-end-column="79" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
+                <marker date="1513267550000" expanded="true" signature="4285:5278" ph="..." />
+                <marker date="1513267550000" expanded="true" signature="4298:4341" ph="..." />
+                <marker date="1513267550000" expanded="true" signature="4355:5265" ph="..." />
+                <marker date="1513267550000" expanded="false" signature="4377:4385" ph="..." />
+                <marker date="1513267550000" expanded="false" signature="4509:4517" ph="..." />
+                <marker date="1513267550000" expanded="true" signature="4780:5250" ph="..." />
+                <marker date="1513267550000" expanded="true" signature="4801:5166" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="679">
+              <caret line="59" column="24" lean-forward="false" selection-start-line="59" selection-start-column="24" selection-end-line="59" selection-end-column="24" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Recorder.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Amazon Api/src/Helpers/Recorder.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="312">
+              <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -84,6 +106,10 @@
       <find>console.log(</find>
       <find>target</find>
       <find>this.state</find>
+      <find>download</find>
+      <find>this.id</find>
+      <find>th</find>
+      <find>this.chunk</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -97,7 +123,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/demoServer.js" />
         <option value="$PROJECT_DIR$/WaterFlowSensor/parameters.json" />
         <option value="$PROJECT_DIR$/DemosServer/demos/WaterFlowSensor/index.js" />
@@ -138,7 +163,9 @@
         <option value="$PROJECT_DIR$/Amazon Api/src/Helpers/GetHueBridge.js" />
         <option value="$PROJECT_DIR$/Amazon Api/webpack.config.js" />
         <option value="$PROJECT_DIR$/Amazon Api/src/Lex/styles.scss" />
+        <option value="$PROJECT_DIR$/Amazon Api/src/Helpers/Recorder.js" />
         <option value="$PROJECT_DIR$/Amazon Api/src/Lex/index.jsx" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -179,8 +206,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -192,19 +217,6 @@
               <item name="sensors" type="b2602c69:ProjectViewProjectNode" />
               <item name="sensors" type="462c0819:PsiDirectoryNode" />
               <item name="Amazon Api" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sensors" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sensors" type="462c0819:PsiDirectoryNode" />
-              <item name="Amazon Api" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="sensors" type="b2602c69:ProjectViewProjectNode" />
-              <item name="sensors" type="462c0819:PsiDirectoryNode" />
-              <item name="Amazon Api" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="index_bundle.js" type="620a8d5e:NestingTreeNode" />
             </path>
             <path>
               <item name="sensors" type="b2602c69:ProjectViewProjectNode" />
@@ -238,28 +250,30 @@
         </subPane>
         <option name="show-excluded-files" value="false" />
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
+    <property name="settings.editor.selected.configurable" value="web-ide.project.structure" />
     <property name="JavaScriptPreferStrict" value="false" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/Amazon Api/src/Helpers" />
-      <recent name="$PROJECT_DIR$/Amazon Api/app" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/Amazon Api" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/examples" />
       <recent name="$PROJECT_DIR$/examples/sensors" />
       <recent name="$PROJECT_DIR$/demos" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Amazon Api/src/Helpers" />
+      <recent name="$PROJECT_DIR$/Amazon Api/app" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -292,12 +306,13 @@
       <workItem from="1513124848697" duration="765000" />
       <workItem from="1513126209672" duration="487000" />
       <workItem from="1513175685616" duration="57000" />
-      <workItem from="1513180635565" duration="13000" />
+      <workItem from="1513180635565" duration="130000" />
+      <workItem from="1513180841728" duration="15455000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="51623000" />
+    <option name="totallyTimeSpent" value="67195000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="14" y="23" width="1426" height="809" extended-state="0" />
@@ -306,12 +321,12 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1914446" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -334,7 +349,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/examples/WaterFlowSensor/index.js" />
     <entry file="file://$PROJECT_DIR$/src/WaterFlowSensor/index.js" />
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
@@ -383,13 +397,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="42" lean-forward="false" selection-start-line="4" selection-start-column="42" selection-end-line="4" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="59" column="0" lean-forward="false" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -457,13 +464,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Amazon Api/public/index_bundle.js.map">
-      <provider editor-type-id="sourcemapFileViewerProvider">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
+      </provider>
+      <provider editor-type-id="sourcemapFileViewerProvider">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Amazon Api/public/index_bundle.js">
@@ -487,6 +494,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Amazon Api/src/Lex/styles.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="17" lean-forward="false" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Amazon Api/src/Helpers/Listen.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1575">
@@ -495,20 +510,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Amazon Api/src/Helpers/Recorder.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="30" column="17" lean-forward="false" selection-start-line="30" selection-start-column="17" selection-end-line="30" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Amazon Api/src/Lex/index.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="60" lean-forward="false" selection-start-line="12" selection-start-column="20" selection-end-line="12" selection-end-column="60" />
+        <state relative-caret-position="465">
+          <caret line="31" column="79" lean-forward="false" selection-start-line="31" selection-start-column="79" selection-end-line="31" selection-end-column="79" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
+            <marker date="1513267550000" expanded="true" signature="4285:5278" ph="..." />
+            <marker date="1513267550000" expanded="true" signature="4298:4341" ph="..." />
+            <marker date="1513267550000" expanded="true" signature="4355:5265" ph="..." />
+            <marker date="1513267550000" expanded="false" signature="4377:4385" ph="..." />
+            <marker date="1513267550000" expanded="false" signature="4509:4517" ph="..." />
+            <marker date="1513267550000" expanded="true" signature="4780:5250" ph="..." />
+            <marker date="1513267550000" expanded="true" signature="4801:5166" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Amazon Api/src/Lex/styles.scss">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="17" lean-forward="false" selection-start-line="3" selection-start-column="17" selection-end-line="3" selection-end-column="17" />
+        <state relative-caret-position="679">
+          <caret line="59" column="24" lean-forward="false" selection-start-line="59" selection-start-column="24" selection-end-line="59" selection-end-column="24" />
           <folding />
         </state>
       </provider>

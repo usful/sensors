@@ -58,4 +58,7 @@ typings/
 .env
 
 #ignore the larger demos
-public/*
+public/
+
+#ignore .idea
+.idea
