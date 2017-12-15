@@ -103,6 +103,8 @@ export default class LexExample extends Component{
     }
   }
 
+  //Todo further filter results based on results confidence of individual photos as well as entire search
+
   analyzeImage(data) {
     const base64Image = data.replace(/^data:image\/(png|jpeg|jpg);base64,/, "")
     const imageBytes = getBinary(base64Image);
