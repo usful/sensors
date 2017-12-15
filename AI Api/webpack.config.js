@@ -14,6 +14,9 @@ module.exports = {
     filename: `index.[chunkhash].js`,
     chunkFilename: '[chunkhash].js'
   },
+  externals:{
+    cv: 'cv',
+  },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss']
   },

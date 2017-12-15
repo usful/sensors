@@ -5,10 +5,9 @@ import AWS from 'aws-sdk';
 import jsHue from 'jsHue';
 import Capture from '../Helpers/Capture';
 import listen from '../Helpers/Listen';
+import FaceDetect from '../Helpers/FaceDetect';
 
 const hue = jsHue();
-
-const hueCommands = {};
 
 const getBinary = base64Image => {
 
@@ -106,15 +105,18 @@ export default class LexExample extends Component{
     }
   }
 
+  createFaceDectector(el) {
+    if (!this.faceDetector) {
+      this.faceDetector = new FaceDetect(el, () => {console.log('face detected');});
+      this.faceDetector.setup();
+    }
+  }
+
   //Todo further filter results based on results confidence of individual photos as well as entire search
 
   analyzeImage(data) {
     const base64Image = data.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
     const imageBytes = getBinary(base64Image);
-
-    // This can be done so much better
-    this.isAuthorized(imageBytes);
-    this.isUnAuthorized(imageBytes);
 
     rekognition.searchFacesByImage({
       CollectionId: 'authorized-hue-faces',
@@ -155,7 +157,7 @@ export default class LexExample extends Component{
         <div>
           <h2 style={{color: this.hueBridge ? 'green' : 'red'}}>{this.hueBridge ? 'Hue Bridge Found' : 'Hue Bridge Not Found'}</h2>
           <h2 style={{color: this.user ? 'green' : 'red'}}>{this.user ? 'Valid Username' : 'Invalid Username'}</h2>
-          <div className={styles.vidContainer}><video ref={el => this.createMediaCapture(el)} muted/></div>
+          <div className={styles.vidContainer}><video width={640} height={480} ref={el => {this.createMediaCapture(el); this.createFaceDectector(el)}} muted/></div>
           <div className={styles.btnContainer}>
             <button
               onClick={
