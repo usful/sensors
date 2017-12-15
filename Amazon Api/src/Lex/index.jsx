@@ -69,6 +69,8 @@ export default class LexExample extends Component{
 
     }
 
+    //Todo further improve this demo by adding more commands. e.g change color, individual lights, get light configuration
+
     listen.addListener((speechText) => {
       console.log(speechText);
       lex.postContent({
