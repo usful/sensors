@@ -11,7 +11,11 @@ class AmazonApiApp extends Component {
   }
 
   render() {
-    if (!this.state.view) {
+    //For now since I only have the one amazon example I am doing this
+    return(<Lex />);
+
+    
+    /**if (!this.state.view) {
       const clickFuncGen = viewName => () => {this.setState({view: viewName})};
       return (
         <div>
@@ -24,7 +28,6 @@ class AmazonApiApp extends Component {
         </div>
       );
     }
-
     switch(this.state.view) {
       case 'Lex':
         return(<Lex />);
@@ -32,6 +35,7 @@ class AmazonApiApp extends Component {
       default :
         return(<div>Error, page not recognized</div>);
     }
+ */
   }
 }
 
