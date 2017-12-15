@@ -64,4 +64,4 @@ public/
 .idea/
 
 #ignore any pictures stored here
-UnknownFaces/*
+UnknownFaces/
