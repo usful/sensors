@@ -3,13 +3,24 @@ import cx from 'classnames';
 import styles from './styles.scss';
 import AWS from 'aws-sdk';
 import jsHue from 'jsHue';
-import Recorder from '../Helpers/Recorder';
+import Capture from '../Helpers/Capture';
 import listen from '../Helpers/Listen';
 
 const hue = jsHue();
 
-const pause = (time = 500) => {
-  return new Promise((resolve, reject) => setTimeout(() => resolve(), time));
+const hueCommands = {};
+
+const getBinary = base64Image => {
+
+  var binaryImg = atob(base64Image);
+  var length = binaryImg.length;
+  var ab = new ArrayBuffer(length);
+  var ua = new Uint8Array(ab);
+  for (var i = 0; i < length; i++) {
+    ua[i] = binaryImg.charCodeAt(i);
+  }
+
+  return ab;
 };
 
 /**
@@ -23,97 +34,12 @@ const config = new AWS.Config({
   region: 'us-east-1',
   credentials
 });
-
 AWS.config = config;
-
-//Removed all video recording attempts from the code. The process will work but the time it takes is too long to be off
-//use for real-time processing. Perhaps could be used in the vendbot since interactions are generally longer than a couple
-//of seconds. This would allow the bot time to store user face for recognition in the future. The time delay could also be
-//seen as a more human trait off trying to remember someone and could be funny.
-
-/**
- * Setting up AWS S3 Bucket
-
-
-const s3 = new AWS.S3({
-  params: {Bucket: 'rekognition-faces-dev'}
-});
 
 /**
  *  Setting up AWS Rekognition
-
+*/
 const rekognition = new AWS.Rekognition();
-
-const analyzeVideo = async name => {
-  console.log(JSON.stringify(name));
-  rekognition.startFaceSearch({
-    CollectionId: 'authorized-hue-faces',
-    Video: {
-      S3Object: {
-        Bucket: 'rekognition-faces-dev',
-        Name: name
-      }
-    },
-    FaceMatchThreshold: 9.0
-  }, (err, response) => {
-    if(err){
-      console.log(err);
-    }else {
-      const jobId = response.JobId;
-      console.log(jobId);
-      rekognition.getFaceSearch({JobId: `${jobId}`}, (err, data) => {
-        if (err) {
-          console.log(err);
-        }else {
-          console.log(data);
-        }
-      });
-    }
-  });
-};
-
-/**
- * Setting up AWS Elastic Transcoder
-
-const eTranscoder = new AWS.ElasticTranscoder();
-
-const transcodeVideo = async name => {
-  const outputName = name.replace('webm', 'mp4').replace('Uploads', 'Transcoded');
-  eTranscoder.createJob({
-    PipelineId: '1513260493463-g7ff1c',
-    Input: {
-      Key: name,
-      Container: 'webm' //could set this to auto
-    },
-    Output: {
-      Key: outputName,
-      PresetId: '1351620000001-100180'
-    }
-  },async err => {
-    if(err) {
-      console.log(err);
-    }else {
-      await pause(20000);
-      analyzeVideo(outputName);
-    }
-  });
-};
-
-const uploadData = async blob => {
-  console.log(blob);
-  const name = `Uploads/${new Date().valueOf()}.webm`;
-  s3.putObject({
-    Body: blob,
-    Key: name,
-    ACL: 'public-read'
-  }, (err) => {
-    if (err) {
-      console.log(err);
-    }else {
-      transcodeVideo(name);
-    }
-  });
-};
 
 /**
  * Setting up AWS Lex Runtime
@@ -126,15 +52,22 @@ export default class LexExample extends Component{
     this.state = {
       listening: false
     };
-    this.hueBridge = hue.bridge('192.168.0.10');
-    this.user = this.hueBridge.user('goiGLMrBdZmvU8nHunuA8AtPJ3EkiW-9wufDI6HK');
+
+    this.authorized = false;
     this.rooms = {};
-    this.user.getGroups().then(groups => {
-      for (let key of Object.keys(groups)) {
-        this.rooms[`${groups[key].name}`.toLowerCase()] = key;
-      }
-      console.log(this.rooms);
-    });
+
+    try {
+      this.hueBridge = hue.bridge('192.168.0.10');
+      this.user = this.hueBridge.user('goiGLMrBdZmvU8nHunuA8AtPJ3EkiW-9wufDI6HK');
+      this.user.getGroups().then(groups => {
+        for (let key of Object.keys(groups)) {
+          this.rooms[`${groups[key].name}`.toLowerCase()] = key;
+        }
+      });
+    }catch(err){
+      console.log('could not connect to hue bridge');
+
+    }
 
     listen.addListener((speechText) => {
       console.log(speechText);
@@ -151,20 +84,48 @@ export default class LexExample extends Component{
             listening: false
           });
           const room = this.rooms[slots.room.toLowerCase()];
-          const bri = Math.floor(255*parseInt(slots.bri)/100);
-          console.log(`setGroupState(${room},{bri:${bri}})`);
-          this.user.setGroupState(room, {bri});
+          const bri = Math.floor(255 * parseInt(slots.bri) / 100);
+          console.log(this);
+          if (this.authorized) {
+            this.user.setGroupState(room, {bri});
+          }
         }
       );
     });
   }
 
-  createRecorder(el) {
-    if (!this.recorder) {
-      this.recorder = new Recorder(el, uploadData);
-      this.recorder.setup();
+  createMediaCapture(el) {
+    if (!this.capture) {
+      this.capture = new Capture(el, this.analyzeImage.bind(this));
+      this.capture.setup();
     }
   }
+
+  analyzeImage(data) {
+    const base64Image = data.replace(/^data:image\/(png|jpeg|jpg);base64,/, "")
+    const imageBytes = getBinary(base64Image);
+    console.log(imageBytes);
+    rekognition.searchFacesByImage({
+      CollectionId: 'authorized-hue-faces',
+      Image: {
+        Bytes: imageBytes
+      },
+      FaceMatchThreshold: 9.0
+    },(err, data) => {
+      if(err) {
+        console.log(err);
+      }else {
+        console.log(data);
+        if(data.FaceMatches.find(result => result.Similarity > 90)) {
+          console.log('command approved');
+          this.authorized = true;
+        }else {
+          console.log('command rejected');
+          this.authorized = false;
+        }
+      }
+    })
+  };
 
   render() {
     return (
@@ -175,13 +136,13 @@ export default class LexExample extends Component{
         <div>
           <h2 style={{color: this.hueBridge ? 'green' : 'red'}}>{this.hueBridge ? 'Hue Bridge Found' : 'Hue Bridge Not Found'}</h2>
           <h2 style={{color: this.user ? 'green' : 'red'}}>{this.user ? 'Valid Username' : 'Invalid Username'}</h2>
-          <div className={styles.vidContainer} style={{display:'none'}}><video ref={el => this.createRecorder(el)} muted/></div>
+          <div className={styles.vidContainer}><video ref={el => this.createMediaCapture(el)} muted/></div>
           <div className={styles.btnContainer}>
             <button
               onClick={
                 async () => {
+                  this.capture.capturePhoto();
                   listen.getResponse();
-                  //this.recorder.start();
                   this.setState({
                     listening: true
                   });
