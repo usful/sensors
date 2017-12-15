@@ -14,7 +14,7 @@ class AmazonApiApp extends Component {
     //For now since I only have the one amazon example I am doing this
     return(<Lex />);
 
-    
+
     /**if (!this.state.view) {
       const clickFuncGen = viewName => () => {this.setState({view: viewName})};
       return (
