@@ -1,10 +1,5 @@
-const options = {
-  mimeType: 'video/webm;codecs=h264',
-  videoBitsPerSecond: Math.floor(1200000)
-};
-
 //13934592
-export default class Recorder {
+export default class Capture {
   constructor(video, cb = () =>{}) {
     this.video = video;
 

@@ -87,10 +87,13 @@ export default class LexExample extends Component{
           });
           const room = this.rooms[slots.room.toLowerCase()];
           const bri = Math.floor(255 * parseInt(slots.bri) / 100);
-          console.log(this);
+
           if (this.authorized) {
             this.user.setGroupState(room, {bri});
           }
+
+          //reset
+          this.authorized = false;
         }
       );
     });
@@ -106,9 +109,13 @@ export default class LexExample extends Component{
   //Todo further filter results based on results confidence of individual photos as well as entire search
 
   analyzeImage(data) {
-    const base64Image = data.replace(/^data:image\/(png|jpeg|jpg);base64,/, "")
+    const base64Image = data.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
     const imageBytes = getBinary(base64Image);
-    console.log(imageBytes);
+
+    // This can be done so much better
+    this.isAuthorized(imageBytes);
+    this.isUnAuthorized(imageBytes);
+
     rekognition.searchFacesByImage({
       CollectionId: 'authorized-hue-faces',
       Image: {
@@ -121,11 +128,19 @@ export default class LexExample extends Component{
       }else {
         console.log(data);
         if(data.FaceMatches.find(result => result.Similarity > 90)) {
-          console.log('command approved');
+          console.log('face recognized');
           this.authorized = true;
-        }else {
-          console.log('command rejected');
-          this.authorized = false;
+        }else{
+          console.log('face not recognized');
+          fetch(
+            '/unknown/upload', {
+              method: 'POST',
+              headers: new Headers({
+                'Content-Type': 'application/json'
+              }),
+              body: JSON.stringify({image: base64Image})
+            }
+          );
         }
       }
     })
