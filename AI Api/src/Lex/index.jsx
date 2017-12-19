@@ -30,8 +30,8 @@ const getBinary = base64Image => {
  * Setting up AWS credentials
  */
 const credentials = new AWS.Credentials({
-  secretAccessKey: 'iqbPa4ZiiT0Wu+KGdvXfvz2bZTeySac1EEU7iKH7',
-  accessKeyId: 'AKIAJ2CUCDT5I6LLXU7Q'
+  secretAccessKey: '',
+  accessKeyId: ''
 });
 const config = new AWS.Config({
   region: 'us-east-1',
