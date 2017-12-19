@@ -151,7 +151,7 @@ export default class LexExample extends Component{
 
     if (index === -1) {
       //Add face to all-faces collection
-      const faceData = await indexFacesAsync({
+      const faceData = await this.indexFacesAsync({
         CollectionId: 'all-faces',
         Image: {
           Bytes: imageBytes,
