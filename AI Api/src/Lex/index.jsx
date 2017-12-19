@@ -54,6 +54,7 @@ export default class LexExample extends Component{
     super(props);
 
     this.rooms = {};
+    this.count=0;
 
     try {
       this.hueBridge = hue.bridge('192.168.0.10');
@@ -100,8 +101,13 @@ export default class LexExample extends Component{
           this.person = true;
           this.analyzeImage();
         } else if (!data.faceDetected && this.person) {
-          delete this.person;
-          speak.speak('Goodbye');
+          this.count ++;
+          //sometimes the facedetect doesn't detect a face due to blured out frame. Should throw away frams that are blurry
+          //but this is a quick work around
+          if (this.count > 1) {
+            delete this.person;
+            speak.speak('Goodbye');
+          }
         }
         mutex.unlock();
       });
