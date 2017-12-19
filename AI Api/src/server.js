@@ -17,6 +17,6 @@ app.use(
   })
 );
 
-require('./Routes/unknownFace')(__dirname).forEach(route => app.use(route));
+require('./Routes/Faces').forEach(route => app.use(route));
 
 app.use(require('koa-static')(path.join(__dirname, '../public')));

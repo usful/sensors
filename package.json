@@ -62,6 +62,8 @@
     "koa-route": "^3.2.0",
     "koa-static": "^4.0.1",
     "koa-webpack-dev-middleware": "^2.0.2",
+    "locks": "^0.2.2",
+    "lodash": "^4.17.4",
     "mobile-detect": "^1.3.7",
     "models": "git://github.com/usful/models#v2.6.0",
     "moment": "^2.19.1",

@@ -3,11 +3,15 @@ import cx from 'classnames';
 import styles from './styles.scss';
 import AWS from 'aws-sdk';
 import jsHue from 'jsHue';
-import Capture from '../Helpers/Capture';
+import locks from 'locks';
+import capture from '../Helpers/Capture';
 import listen from '../Helpers/Listen';
-import FaceDetect from '../Helpers/FaceDetect';
+import speak from '../Helpers/Speak';
+import face_detect from '../Helpers/FaceDetect';
 
 const hue = jsHue();
+
+const mutex = locks.createMutex();
 
 const getBinary = base64Image => {
 
@@ -48,11 +52,7 @@ const lex = new AWS.LexRuntime();
 export default class LexExample extends Component{
   constructor(props) {
     super(props);
-    this.state = {
-      listening: false
-    };
 
-    this.authorized = false;
     this.rooms = {};
 
     try {
@@ -63,7 +63,7 @@ export default class LexExample extends Component{
           this.rooms[`${groups[key].name}`.toLowerCase()] = key;
         }
       });
-    }catch(err){
+    } catch (err) {
       console.log('could not connect to hue bridge');
 
     }
@@ -79,74 +79,125 @@ export default class LexExample extends Component{
           inputStream: speechText,
           userId: 'dev00',
         }, (err, response) => {
-          const slots = response.slots;
-          console.log(slots);
-          this.setState({
-            listening: false
-          });
-          const room = this.rooms[slots.room.toLowerCase()];
-          const bri = Math.floor(255 * parseInt(slots.bri) / 100);
+          /** const slots = response.slots;
+           const room = this.rooms[slots.room.toLowerCase()];
+           const bri = Math.floor(255 * parseInt(slots.bri) / 100);
 
-          if (this.authorized) {
-            this.user.setGroupState(room, {bri});
-          }
-
-          //reset
-          this.authorized = false;
+           this.user.setGroupState(room, {bri});
+           **/
+          console.log(response);
         }
       );
     });
+
+    //capture.addListener(this.analyzeImage.bind(this));
+    capture.addListener(canvas => face_detect.faceDetect(canvas));
+
+    //face_detect.addListener(this.drawFaces.bind(this));
+    face_detect.addListener(data => {
+      mutex.lock(() => {
+        if (data.faceDetected && !this.person) {
+          this.person = true;
+          this.analyzeImage();
+        } else if (!data.faceDetected && this.person) {
+          delete this.person;
+          speak.speak('Goodbye');
+        }
+        mutex.unlock();
+      });
+    });
+
   }
 
-  createMediaCapture(el) {
-    if (!this.capture) {
-      this.capture = new Capture(el, this.analyzeImage.bind(this));
-      this.capture.setup();
+  //Method for testing the face detection. Will make the capture image canvas visible and draw rectangles around the face
+  //that has been detected
+  drawFaces(data) {
+    const canvas = capture.canvas;
+    if (!document.body.contains(canvas)) {
+      document.body.appendChild(canvas);
     }
-  }
-
-  createFaceDectector(el) {
-    if (!this.faceDetector) {
-      this.faceDetector = new FaceDetect(el, () => {console.log('face detected');});
-      this.faceDetector.setup();
+    const context = canvas.getContext('2d');
+    context.strokeStyle = "red";
+    for (let face of data.features) {
+      context.rect(face.x, face.y, face.width, face.height);
     }
+    context.stroke();
   }
 
   //Todo further filter results based on results confidence of individual photos as well as entire search
 
-  analyzeImage(data) {
+  async analyzeImage() {
+
+    const data = capture.canvas.toDataURL();
     const base64Image = data.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
     const imageBytes = getBinary(base64Image);
 
-    rekognition.searchFacesByImage({
-      CollectionId: 'authorized-hue-faces',
+    const results = await this.searchFacesAsync({
+      CollectionId: 'all-faces',
       Image: {
         Bytes: imageBytes
       },
-      FaceMatchThreshold: 9.0
-    },(err, data) => {
-      if(err) {
-        console.log(err);
-      }else {
-        console.log(data);
-        if(data.FaceMatches.find(result => result.Similarity > 90)) {
-          console.log('face recognized');
-          this.authorized = true;
-        }else{
-          console.log('face not recognized');
-          fetch(
-            '/unknown/upload', {
-              method: 'POST',
-              headers: new Headers({
-                'Content-Type': 'application/json'
-              }),
-              body: JSON.stringify({image: base64Image})
-            }
-          );
+      FaceMatchThreshold: 0.90
+    });
+
+    const index = results.FaceMatches.findIndex(match => match.Similarity > 0.9);
+    let faceId;
+
+    if (index === -1) {
+      //Add face to all-faces collection
+      const faceData = await indexFacesAsync({
+        CollectionId: 'all-faces',
+        Image: {
+          Bytes: imageBytes,
         }
-      }
-    })
+      });
+      faceId = faceData.FaceRecords[0].Face.FaceId;
+    }else {
+      faceId = results.FaceMatches[index].Face.FaceId;
+    }
+
+    const json = await (await fetch(`/face/${faceId}`)).json();
+    console.log(json);
+    this.person = json.person;
+    if(!!json.person) {
+      console.log(json.person);
+      speak.speak(`Hello, ${json.person.name}`);
+    }else {
+      //get their name
+    }
+
   };
+
+  searchFacesAsync(params) {
+    return new Promise((resolve, reject) => {
+      rekognition.searchFacesByImage(params, (err,data) => {
+          if(err){
+            return reject(err);
+          }
+          resolve(data);
+      });
+    })
+  }
+
+  indexFacesAsync(params) {
+    return new Promis((resolve, reject) => {
+      rekognition.indexFaces(params, (err, data) => {
+        if(err){
+          return reject(err);
+        }
+        resolve(data);
+      })
+    })
+  }
+
+  setupMediaCapture(el) {
+    if (!capture.video) {
+      capture.setup(el);
+      setInterval(() => {
+        capture.capturePhoto();
+      }, 500);
+    }
+  }
 
   render() {
     return (
@@ -157,23 +208,18 @@ export default class LexExample extends Component{
         <div>
           <h2 style={{color: this.hueBridge ? 'green' : 'red'}}>{this.hueBridge ? 'Hue Bridge Found' : 'Hue Bridge Not Found'}</h2>
           <h2 style={{color: this.user ? 'green' : 'red'}}>{this.user ? 'Valid Username' : 'Invalid Username'}</h2>
-          <div className={styles.vidContainer}><video width={640} height={480} ref={el => {this.createMediaCapture(el); this.createFaceDectector(el)}} muted/></div>
+          <div className={styles.vidContainer}><video width={640} height={480} ref={el => this.setupMediaCapture(el)} muted/></div>
           <div className={styles.btnContainer}>
             <button
               onClick={
                 async () => {
-                  this.capture.capturePhoto();
-                  listen.getResponse();
-                  this.setState({
-                    listening: true
-                  });
+                  //listen.getResponse();
+                  listen.emit('set kitchen lights');
                 }
               }
-              disabled={this.state.listening}
             >
               Listen
             </button>
-            {this.state.listening ? <h3>Listening ...</h3> : null}
           </div>
         </div>
       </div>

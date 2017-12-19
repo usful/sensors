@@ -1,62 +1,39 @@
-export default class FaceDetect  {
+class FaceDetect  {
 
-  constructor(video) {
-    this.video = video;
+  constructor() {
+    this.worker = new Worker('cv-wasm/wasm-worker.js');
     this.cbs = [];
-    this.faceDetected = false;
+
+    this.worker.onmessage = message => {
+      const data = message.data;
+      if (data.faceDetected !== null) {
+        this.detected(data);
+      }
+    };
   }
 
   addListener(cb) {
     this.cbs.push(cb);
   }
 
-  detected() {
-    this.cbs.forEach(cb => cb());
+  detected(event) {
+    this.cbs.forEach(cb => cb(event));
   }
 
-  processVideo() {
-    try {
-      const begin = Date.now();
-      const {
-        src,
-        cap,
-        classifier,
-        dst,
-        gray,
-        faces
-      } = this;
-      // start processing.
-      cap.read(src);
-      src.copyTo(dst);
-      cv.cvtColor(dst, gray, cv.COLOR_RGBA2GRAY, 0);
-      // detect faces.
-      classifier.detectMultiScale(gray, faces, 1.1, 3, 0);
-      //if faces found and no face was detected earlier execute callbacks else set faceDetected to false
-      if(faces.size() > 0 && !this.faceDetected) {
-        this.detected();
-        this.faceDetected = true;
-      }else{
-        this.faceDetected = false;
-      }
-      // schedule the next one.
-      let delay = 1000/60 - (Date.now() - begin);
-      setTimeout(this.processVideo, delay);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  faceDetect(canvas) {
+    this.startJob(canvas, 'faceDetect');
+  }
 
-  setup() {
-    console.log(this.video, this.video.height, this.video.width);
-    this.src = new cv.Mat(this.video.height, this.video.width, cv.CV_8UC4);
-    this.dst = new cv.Mat(this.video.height, this.video.width, cv.CV_8UC1);
-    this.gray = new cv.Mat();
-    this.cap = new cv.VideoCapture(this.video);
-    this.faces = new cv.RectVector();
-    this.classifier = new cv.CascadeClassifier();
+  startJob(canvas, command) {
+    let message = {
+      cmd: command,
+      img: canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height)
+    };
 
-    this.classifier.load('haarcascade_frontalface_default.xml');
-
-    this.processVideo();
+    this.worker.postMessage(message);
   }
 }
+
+const face_detector = new FaceDetect();
+
+export default face_detector;

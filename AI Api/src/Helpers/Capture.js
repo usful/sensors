@@ -1,11 +1,16 @@
 //13934592
-export default class Capture {
-  constructor(video, cb = () =>{}) {
-    this.video = video;
-
+class Capture {
+  constructor() {
     this.canvas = document.createElement('canvas');
+    this.cbs = [];
+  }
 
-    this.cb = cb;
+  addListener(cb) {
+    this.cbs.push(cb);
+  }
+
+  emit(event) {
+    this.cbs.forEach(cb => cb(event));
   }
 
   capturePhoto() {
@@ -14,14 +19,16 @@ export default class Capture {
     this.canvas.height = this.video.videoHeight;
     context.drawImage(this.video, 0, 0, this.video.videoWidth, this.video.videoHeight);
 
-    this.cb(this.canvas.toDataURL());
+    this.emit(this.canvas);
   }
 
-  async setup() {
+  async setup(video) {
     try {
+      this.video = video;
+
       this.stream = await navigator.mediaDevices.getUserMedia({
         video: true,
-        audio: true
+        audio: false
       });
 
       if (this.video) {
@@ -29,8 +36,14 @@ export default class Capture {
         this.video.play();
       }
 
+      console.log('media capture setup');
+
     } catch (err) {
       console.log(err);
     }
   }
 }
+
+const capture = new Capture();
+
+export default capture;
