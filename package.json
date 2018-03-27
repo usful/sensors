@@ -1,0 +1,21 @@
+{
+  "name": "sensorlibrary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.12.2",
+    "glob": "^7.1.2",
+    "infrared": "0.0.4",
+    "pigpio": "^0.6.3",
+    "prompt-sync": "^4.1.5",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {}
+}
